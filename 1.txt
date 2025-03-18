@@ -22,5 +22,5 @@ if (isset($_GET['check'])) {
                 .then(data => console.log(data))
                 .catch(error => console.error("Hata:", error));
         }
-        setInterval(updateFile, 3000); // Her 3 saniyede bir güncelle
+        setInterval(updateFile, 1000); // Her 3 saniyede bir güncelle
     </script>
